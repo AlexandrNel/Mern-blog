@@ -36,7 +36,7 @@ export const registerController = async (req, res) => {
 
     res.json({
       message: "Success",
-      data: userData,
+      user: userData,
       token,
     });
   } catch (error) {
