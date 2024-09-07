@@ -6,6 +6,8 @@ const PORT = 3000;
 const app = express();
 connectToDatebase();
 
-app.use(express.json(), authRouter);
+app.use(express.json());
+
+app.use("/auth", authRouter);
 
 app.listen(PORT, (err) => (err ? console.log(err) : console.log("Server OK")));

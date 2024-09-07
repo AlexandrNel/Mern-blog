@@ -1,16 +1,12 @@
 import express from "express";
 import { checkAuth } from "../middlewares/checkAuth.js";
 import { registerValidation } from "../utils/registerValidation.js";
-import {
-  getMe,
-  registerController,
-  loginController,
-} from "../controllers/index.js";
-
+import { authController } from "../controllers/index.js";
+const { registerController, loginController, getMe } = authController;
 export const authRouter = express.Router();
 
-authRouter.post("/auth/register", registerValidation, registerController);
+authRouter.post("/register", registerValidation, registerController);
 
-authRouter.post("/auth/login", loginController);
+authRouter.post("/login", loginController);
 
-authRouter.post("/auth/me", checkAuth, getMe);
+authRouter.post("/me", checkAuth, getMe);
