@@ -22,7 +22,7 @@ export const getMe = async (req, res) => {
   }
 };
 
-export const loginController = async (req, res) => {
+export const login = async (req, res) => {
   try {
     const user = await UserModel.findOne({ email: req.body.email }).select(
       "+password"
@@ -63,7 +63,7 @@ export const loginController = async (req, res) => {
   }
 };
 
-export const registerController = async (req, res) => {
+export const register = async (req, res) => {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

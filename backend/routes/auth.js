@@ -2,11 +2,12 @@ import express from "express";
 import { checkAuth } from "../middlewares/checkAuth.js";
 import { registerValidation } from "../utils/registerValidation.js";
 import { authController } from "../controllers/index.js";
-const { registerController, loginController, getMe } = authController;
-export const authRouter = express.Router();
+const router = express.Router();
 
-authRouter.post("/register", registerValidation, registerController);
+router.post("/auth/register", registerValidation, authController.register);
 
-authRouter.post("/login", loginController);
+router.post("/auth/login", authController.login);
 
-authRouter.post("/me", checkAuth, getMe);
+router.post("/auth/me", checkAuth, authController.getMe);
+
+export default router;
