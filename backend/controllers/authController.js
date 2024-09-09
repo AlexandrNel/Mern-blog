@@ -1,9 +1,8 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { validationResult } from "express-validator";
 import UserModel from "../models/user.js";
 
-const SECRET_KEY = "secret12345";
+const SECRET_KEY = process.env.SECRET_KEY;
 
 export const getMe = async (req, res) => {
   try {

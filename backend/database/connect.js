@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const DB_URL = "mongodb://localhost:27017/blog";
+const DB_URL = process.env.DB_URL;
 
 export const connectToDatebase = async () => {
   try {
