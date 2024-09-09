@@ -3,7 +3,7 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 95%;
     --foreground: 0 0% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
@@ -64,3 +64,19 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* body{
+  background-color: rgb(230, 230, 230);
+} */
+ .container-main{
+  padding: 0 10px ;
+  max-width: 1200px;
+  margin: auto;
+  width: 100%;
+ }
+
+ #root{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+ }
