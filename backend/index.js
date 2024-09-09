@@ -1,8 +1,6 @@
 import express from "express";
 
-import authRouter from "./routes/auth.js";
-import postRouter from "./routes/posts.js";
-import uploadRouter from "./routes/upload.js";
+import { authRouter, postRouter, uploadRouter } from "./routes/index.js";
 import { connectToDatebase } from "./database/connect.js";
 
 const PORT = 3000;

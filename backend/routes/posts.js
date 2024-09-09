@@ -1,8 +1,7 @@
 import express from "express";
-import { checkAuth } from "../middlewares/checkAuth.js";
+import { handleValidationErrors, checkAuth } from "../middlewares/index.js";
 import { createPostValidation } from "../utils/validations.js";
 import { PostController } from "../controllers/index.js";
-import handleValidationErrors from "../middlewares/handleValidationErrors.js";
 const router = express.Router();
 
 router.get("/posts", PostController.getAll);
