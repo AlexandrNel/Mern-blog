@@ -1,13 +1,14 @@
 import express from "express";
+import "dotenv/config";
 
+import { authRouter, postRouter, uploadRouter } from "./routes/index.js";
+import { connectToDatebase } from "./database/connect.js";
+
+const PORT = process.env.PORT;
 const app = express();
 
-app.use(express.json());
+connectToDatebase();
 
-app.get("/", (req, res) => {
-  res.json({
-    success: "true",
-  });
-});
+app.use(express.json(), uploadRouter, authRouter, postRouter);
 
-app.listen(3000, (err) => (err ? console.log(err) : console.log("Server OK")));
+app.listen(PORT, (err) => (err ? console.log(err) : console.log("Server OK")));
