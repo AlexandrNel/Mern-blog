@@ -1,0 +1,10 @@
+.root {
+  --background: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 0;
+  background-color: var(--background);
+  box-shadow: 0 0px 10px 0 rgba(119, 119, 119, 0.384);
+  margin-bottom: 40px;
+}
