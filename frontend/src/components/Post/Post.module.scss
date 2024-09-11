@@ -1,0 +1,39 @@
+.root {
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  overflow: hidden;
+  transition: border 0.1s ease-in-out;
+  border: 2px solid transparent;
+  p {
+    font-weight: 600;
+  }
+  span {
+    color: rgb(133, 133, 133);
+    font-size: 12px;
+  }
+  &:hover {
+    border: 2px solid rgba(0, 63, 179, 0.616);
+    .edit {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+.edit {
+  background-color: rgba(255, 255, 255, 0.603);
+  transition: all 0.4s ease-in-out;
+  opacity: 0;
+  visibility: hidden;
+}
+.banner {
+  min-height: 200px;
+  background-color: rgb(207, 207, 207);
+  width: 100%;
+  margin: auto;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}

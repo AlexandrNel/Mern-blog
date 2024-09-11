@@ -1,0 +1,19 @@
+.root {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: min-content;
+  gap: 2px;
+  margin-bottom: 20px;
+}
+.tab {
+  font-size: 14px;
+  padding: 10px 16px;
+  transition: border 0.1s ease-in-out;
+  border-bottom: 1px solid transparent;
+  cursor: pointer;
+  &:hover,
+  &.active {
+    border-bottom: 1px solid black;
+  }
+}
