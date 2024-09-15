@@ -15,9 +15,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useDispatch, useSelector } from "react-redux";
+import { selectIsAuth } from "@/redux/slices/authSlice";
+import { Navigate } from "react-router-dom";
+import { fetchRegister } from "@/redux/slices/authSlice";
+import { AppDispatch, RootState } from "@/redux/store";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-  username: z.string().min(3, {
+  fullName: z.string().min(3, {
     message: "Укажите полное имя",
   }),
   email: z.string().email({
@@ -29,21 +35,41 @@ const formSchema = z.object({
 });
 
 const Register = () => {
+  const isAuth = useSelector(selectIsAuth);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      fullName: "",
       email: "",
       password: "",
     },
   });
+  const dispatch = useDispatch<AppDispatch>();
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const data = await dispatch(fetchRegister(values));
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    if (!data.payload) {
+      return toast.error("Не удалось зарегистрироваться.", {
+        description: "Пользователь с такой почтой уже существует",
+      });
+    }
+    toast.success("Вы успешно зарегистрировались!", {
+      closeButton: true,
+    });
+    if ("token" in data.payload) {
+      window.localStorage.setItem("token", data.payload.token);
+    } else {
+      return toast.error("Не удалось зарегистрироваться");
+    }
   }
+  if (isAuth) {
+    return <Navigate to={"/"} />;
+  }
+
   return (
     <div className="container-main h-full flex justify-center items-center">
-      <div className=" w-[400px] mt-[-86px] bg-white p-10 rounded-lg">
+      <div className=" w-[400px] mt-[-86px] border bg-card text-card-foreground shadow  rounded-lg p-10 ">
         <h1 className=" text-center font-bold text-[30px] mb-5">
           Создание аккаунта
         </h1>
@@ -56,12 +82,12 @@ const Register = () => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
               control={form.control}
-              name="username"
+              name="fullName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Username</FormLabel>
+                  <FormLabel>fullName</FormLabel>
                   <FormControl>
-                    <Input placeholder="Полное имя" {...field} />
+                    <Input type="text" placeholder="Полное имя" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,8 +100,13 @@ const Register = () => {
                 <FormItem>
                   <FormLabel>Email</FormLabel>
                   <FormControl>
-                    <Input placeholder="example@gmail.com" {...field} />
+                    <Input
+                      type="email"
+                      placeholder="example@gmail.com"
+                      {...field}
+                    />
                   </FormControl>
+
                   <FormMessage />
                 </FormItem>
               )}

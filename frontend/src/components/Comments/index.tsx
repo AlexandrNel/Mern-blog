@@ -4,9 +4,9 @@ import walter from "../../assets/walter.jpg";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 
-const Comments = () => {
+const Comments: React.FC = () => {
   return (
-    <div className="p-5 pr-0 bg-white rounded-lg">
+    <div className="p-5 pr-0 border bg-card text-card-foreground shadow  rounded-lg">
       <h2 className="text-[20px] font-bold">Комментарии</h2>
       <div className="flex items-center gap-2 mb-5">
         <Avatar>

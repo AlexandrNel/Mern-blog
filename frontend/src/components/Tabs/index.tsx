@@ -7,18 +7,33 @@ type TabsProps = {
   setValue: (i: number) => void;
 };
 
-const tabs = ["Новые", "Популярные"];
+export const list = [
+  {
+    id: 1,
+    name: "Новые",
+    field: "createdAt",
+    property: "desc",
+  },
+  {
+    id: 2,
+    name: "Популярные",
+    field: "viewsCount",
+    property: "desc",
+  },
+];
+
 const Tabs: React.FC<TabsProps> = ({ value, setValue }) => {
   return (
     <div className={`${styles.root}`}>
-      {tabs.map((tab, i) => (
+      {list.map((category, i) => (
         <div
+          key={category.id}
           onClick={() => {
-            setValue(i);
+            setValue(category.id);
           }}
-          className={`${styles.tab} ${value === i && styles.active}`}
+          className={`${styles.tab} ${value === category.id && styles.active}`}
         >
-          {tab}
+          {category.name}
         </div>
       ))}
     </div>

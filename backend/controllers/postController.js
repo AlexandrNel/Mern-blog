@@ -2,8 +2,21 @@ import PostSchema from "../models/post.js";
 
 export const getAll = async (req, res) => {
   try {
-    const posts = await PostSchema.find().populate("user").exec();
-    res.json(posts);
+    const { sortBy, sortOrder } = req.query;
+    if ((sortBy, sortOrder)) {
+      const sort = {};
+      sort[sortBy] = sortOrder === "asc" ? 1 : -1;
+      const posts = await PostSchema.find()
+        .sort(sort)
+        .populate({ path: "user", select: ["fullName", "avatarUrl"] })
+        .exec();
+      res.json(posts);
+    } else {
+      const posts = await PostSchema.find()
+        .populate({ path: "user", select: ["fullName", "avatarUrl"] })
+        .exec();
+      res.json(posts);
+    }
   } catch (error) {
     console.log(error);
     res.status(404).json({
@@ -34,29 +47,39 @@ export const create = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const postId = req.params.id;
-    PostSchema.findOneAndUpdate(
-      { _id: postId },
-      {
-        $inc: { viewsCount: 1 },
-      },
-      {
-        returnDocument: "after",
-      }
-    ).then((doc, err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          message: "Не удалось вернуть статью",
+    if (postId.match(/^[0-9a-fA-F]{24}$/)) {
+      PostSchema.findOneAndUpdate(
+        { _id: postId },
+        {
+          $inc: { viewsCount: 1 },
+        },
+        {
+          returnDocument: "after",
+        }
+      )
+        .populate({ path: "user", select: ["fullName", "avatarUrl"] })
+        .exec()
+        .then((doc, err) => {
+          if (err) {
+            console.log(err);
+            return res.status(500).json({
+              message: "Не удалось вернуть статью",
+            });
+          }
+          if (!doc) {
+            console.log(err);
+            return res.status(404).json({
+              message: "Статься не найдена",
+            });
+          }
+          res.json(doc);
         });
-      }
-      if (!doc) {
-        console.log(err);
-        return res.status(404).json({
-          message: "Статься не найдена",
-        });
-      }
-      res.json(doc);
-    });
+    } else {
+      res.status(500).json({
+        error: { id: id.match(/^[0-9a-fA-F]{24}$/) },
+        message: "Не удалось получить статью",
+      });
+    }
     // const post = await PostSchema.findById(postId);
     // res.json(post);
   } catch (error) {
@@ -88,7 +111,7 @@ export const remove = async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Не удалось уд",
+      message: "Не удалось удалить статью",
     });
   }
 };

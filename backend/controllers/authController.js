@@ -50,9 +50,13 @@ export const login = async (req, res) => {
         expiresIn: "7d",
       }
     );
-
+    const { password, _id, fullName, email, createdAt, updatedAt } = user._doc;
     res.status(200).json({
-      user,
+      _id,
+      fullName,
+      email,
+      createdAt,
+      updatedAt,
       token,
     });
   } catch (error) {

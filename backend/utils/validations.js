@@ -18,3 +18,4 @@ export const createPostValidation = [
   body("tags").optional().isArray(),
   body("imageUrl").optional().isString(),
 ];
+export const createComment = [body("comments").optional().isArray()];

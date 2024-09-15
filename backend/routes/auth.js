@@ -11,6 +11,6 @@ router.post(
   authController.register
 );
 router.post("/auth/login", authController.login);
-router.post("/auth/me", checkAuth, authController.getMe);
+router.get("/auth/me", checkAuth, authController.getMe);
 
 export default router;

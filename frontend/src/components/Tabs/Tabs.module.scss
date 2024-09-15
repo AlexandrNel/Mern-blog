@@ -14,6 +14,6 @@
   cursor: pointer;
   &:hover,
   &.active {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid hsl(var(--foreground));
   }
 }
