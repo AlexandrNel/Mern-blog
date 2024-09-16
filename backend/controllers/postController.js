@@ -13,11 +13,6 @@ export const getAll = async (req, res) => {
         path: "user",
         select: ["fullName", "avatarUrl"],
       })
-      .populate({
-        path: "comments",
-        select: ["-post"],
-        populate: { path: "autor", select: ["fullName", "avatarUrl"] },
-      })
       .sort(sort)
       .exec();
     res.json(posts);
@@ -62,6 +57,11 @@ export const getOne = async (req, res) => {
         }
       )
         .populate({ path: "user", select: ["fullName", "avatarUrl"] })
+        .populate({
+          path: "comments",
+          select: ["-post"],
+          populate: { path: "autor", select: ["fullName", "avatarUrl"] },
+        })
         .exec()
         .then((doc, err) => {
           if (err) {
