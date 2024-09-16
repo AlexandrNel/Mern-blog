@@ -1,22 +1,26 @@
+import { populate } from "dotenv";
 import PostSchema from "../models/post.js";
 
 export const getAll = async (req, res) => {
   try {
     const { sortBy, sortOrder } = req.query;
-    if ((sortBy, sortOrder)) {
-      const sort = {};
-      sort[sortBy] = sortOrder === "asc" ? 1 : -1;
-      const posts = await PostSchema.find()
-        .sort(sort)
-        .populate({ path: "user", select: ["fullName", "avatarUrl"] })
-        .exec();
-      res.json(posts);
-    } else {
-      const posts = await PostSchema.find()
-        .populate({ path: "user", select: ["fullName", "avatarUrl"] })
-        .exec();
-      res.json(posts);
-    }
+
+    const sort = {};
+    sort[sortBy] = sortOrder === "asc" ? 1 : -1;
+
+    const posts = await PostSchema.find()
+      .populate({
+        path: "user",
+        select: ["fullName", "avatarUrl"],
+      })
+      .populate({
+        path: "comments",
+        select: ["-post"],
+        populate: { path: "autor", select: ["fullName", "avatarUrl"] },
+      })
+      .sort(sort)
+      .exec();
+    res.json(posts);
   } catch (error) {
     console.log(error);
     res.status(404).json({
