@@ -51,7 +51,8 @@ const PostPage = () => {
           isEditable={false}
           isFull={true}
         />
-        <Comments />
+
+        <Comments user={post.user} comments={post.comments} />
       </>
     </div>
   );

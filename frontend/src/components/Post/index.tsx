@@ -19,6 +19,7 @@ const Post: React.FC<PostProps> = ({
   _id,
   imageUrl,
   user,
+  comments,
   createdAt,
   updatedAt,
   title,
@@ -65,7 +66,14 @@ const Post: React.FC<PostProps> = ({
         <div className="flex gap-2 items-center">
           <Avatar>
             <AvatarImage src="" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>
+              {user.fullName.includes("")
+                ? user.fullName
+                    .split(" ")
+                    .map((item) => item.slice(0, 1))
+                    .join("")
+                : user.fullName.slice(0, 1)}
+            </AvatarFallback>
           </Avatar>
           <div className="flex flex-col mb-2">
             <p className={styles.name}>{user.fullName}</p>
@@ -100,7 +108,8 @@ const Post: React.FC<PostProps> = ({
               {viewsCount.toString()}
             </span>
             <span className="flex items-center gap-1">
-              <MessageSquare size={16} color="#858585" strokeWidth={1} />3
+              <MessageSquare size={16} color="#858585" strokeWidth={1} />
+              {comments?.length}
             </span>
           </div>
         </div>

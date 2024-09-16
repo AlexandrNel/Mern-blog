@@ -29,6 +29,7 @@ const Home: React.FC = () => {
               ) : (
                 <Post
                   key={i}
+                  comments={item.comments}
                   _id={item._id}
                   imageUrl={item.imageUrl}
                   tags={item.tags}

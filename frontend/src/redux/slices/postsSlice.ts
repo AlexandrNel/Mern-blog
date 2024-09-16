@@ -9,12 +9,21 @@ export type Autor = {
   avatarUrl: string;
 };
 
+export type CommentType = {
+  _id: string;
+  autor: Autor;
+  content: string;
+  parentComment: string[];
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type PostType = {
   _id: string;
   tags: string[];
   imageUrl: string;
   text?: string;
-  comments?: [];
+  comments?: CommentType[];
   title: string;
   user: Autor;
   viewsCount: number;
