@@ -16,7 +16,11 @@ router.post("/comments", checkAuth, async (req, res) => {
     const comment = await doc.save();
     post.comments.push(comment._id);
     post.save();
-    res.json(comment);
+
+    const populatedComment = await Comment.findById(comment._id)
+      .populate("autor", "fullName avatarUrl")
+      .exec();
+    res.json(populatedComment);
   } catch (error) {
     console.log(error);
     res.json({
@@ -24,5 +28,19 @@ router.post("/comments", checkAuth, async (req, res) => {
     });
   }
 });
+router.delete("/comments/:id", checkAuth, async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    await Comment.findByIdAndDelete(commentId);
+    await Post.updateMany(
+      { comments: commentId },
+      { $pull: { comments: commentId } }
+    );
+    res.json({ message: "success" });
+  } catch (error) {
+    console.log(error);
 
+    res.status(401).json({ message: "Не удалось удалить комментарий" });
+  }
+});
 export default router;

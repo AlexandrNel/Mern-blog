@@ -14,10 +14,7 @@ const PostSchema = new mongoose.Schema(
       type: Array,
       default: [],
     },
-
-    comments: [
-      { type: mongoose.Schema.Types.ObjectId, ref: "Comments", required: true },
-    ],
+    comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "Comment" }],
     viewsCount: {
       type: Number,
       default: 0,

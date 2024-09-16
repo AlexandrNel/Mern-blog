@@ -40,6 +40,7 @@ const PostPage = () => {
       <>
         <Post
           _id={post._id}
+          comments={post.comments}
           imageUrl={post.imageUrl}
           tags={post.tags}
           text={post.text}
@@ -52,7 +53,11 @@ const PostPage = () => {
           isFull={true}
         />
 
-        <Comments postId={post._id} user={post.user} comments={post.comments} />
+        <Comments
+          postId={post._id}
+          user={post.user}
+          comments={post.comments || []}
+        />
       </>
     </div>
   );

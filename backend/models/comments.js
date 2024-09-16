@@ -28,4 +28,4 @@ const CommentSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("Comments", CommentSchema);
+export default mongoose.model("Comment", CommentSchema);

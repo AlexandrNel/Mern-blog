@@ -19,7 +19,7 @@ const Post: React.FC<PostProps> = ({
   _id,
   imageUrl,
   user,
-  comments,
+  comments = [],
   createdAt,
   updatedAt,
   title,
@@ -109,7 +109,7 @@ const Post: React.FC<PostProps> = ({
             </span>
             <span className="flex items-center gap-1">
               <MessageSquare size={16} color="#858585" strokeWidth={1} />
-              {comments?.length}
+              {comments.length}
             </span>
           </div>
         </div>

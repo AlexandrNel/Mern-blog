@@ -15,6 +15,8 @@ export const getAll = async (req, res) => {
       })
       .sort(sort)
       .exec();
+    console.log(posts);
+
     res.json(posts);
   } catch (error) {
     console.log(error);
@@ -23,7 +25,25 @@ export const getAll = async (req, res) => {
     });
   }
 };
+export const getComments = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    console.log(postId);
 
+    const comments = await PostSchema.findById(postId)
+      .select("comments")
+      .populate({
+        path: "autor",
+      });
+
+    console.log(comments);
+
+    res.json(comments);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: "Не удалось получить комментарии" });
+  }
+};
 export const create = async (req, res) => {
   try {
     const doc = new PostSchema({
