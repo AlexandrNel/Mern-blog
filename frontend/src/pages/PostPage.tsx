@@ -52,7 +52,7 @@ const PostPage = () => {
           isFull={true}
         />
 
-        <Comments user={post.user} comments={post.comments} />
+        <Comments postId={post._id} user={post.user} comments={post.comments} />
       </>
     </div>
   );

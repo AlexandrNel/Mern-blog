@@ -4,13 +4,34 @@ import walter from "../../assets/walter.jpg";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Autor, CommentType } from "@/redux/slices/postsSlice";
+import { FieldValues, useForm } from "react-hook-form";
+import axios from "../../axios";
+import { toast } from "sonner";
 
 type CommentsListProps = {
   user: Autor;
   comments: CommentType[] | undefined;
+  postId: string;
 };
 
-const Comments: React.FC<CommentsListProps> = ({ comments, user }) => {
+const Comments: React.FC<CommentsListProps> = ({ comments, user, postId }) => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+  const sendComment = (data: FieldValues) => {
+    axios
+      .post("/comments", {
+        content: data.content,
+        post: postId,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => toast.error("Произошла ошибка при отправке комментария"));
+  };
+
   if (!comments) {
     return <>Loading...</>;
   }
@@ -62,12 +83,19 @@ const Comments: React.FC<CommentsListProps> = ({ comments, user }) => {
           </AvatarFallback>
         </Avatar>
         <div className="w-full pr-5">
-          <Textarea
-            className="mb-4"
-            maxLength={100}
-            placeholder="Написать комментарий"
-          />
-          <Button>Отправить</Button>
+          <form
+            onSubmit={handleSubmit((data) => {
+              sendComment(data);
+            })}
+          >
+            <Textarea
+              {...register("content", { required: true })}
+              className="mb-4"
+              maxLength={100}
+              placeholder="Написать комментарий"
+            />
+            <Button>Отправить</Button>
+          </form>
         </div>
       </div>
     </div>
