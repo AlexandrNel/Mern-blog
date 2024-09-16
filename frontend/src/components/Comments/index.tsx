@@ -75,7 +75,7 @@ const Comments: React.FC<CommentsListProps> = ({
       <div className="flex items-center gap-2 mb-5">
         <UserAvatar imageUrl={"http://localhost:3000/uploads/walter.jpg"} />
         <div className="py-2 border-b w-full flex flex-col ">
-          <p className="text-[#3f3f3f] font-[500]">Вася Пупкин</p>
+          <p className="text-foreground font-[500]">Вася Пупкин</p>
           <span className=" text-[#868686] text-[14px]">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Quam enim
             culpa. Perferendis!

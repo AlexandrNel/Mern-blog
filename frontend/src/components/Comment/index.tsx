@@ -24,7 +24,7 @@ const Comment: React.FC<CommentProps> = ({
       <UserAvatar user={comment.autor} />
       <div className="py-2 pr-3 border-b w-full flex items-center justify-between ">
         <div className="flex flex-col w-full">
-          <p className="text-[#3f3f3f] font-[500]">{comment.autor.fullName}</p>
+          <p className="text-foreground font-[500]">{comment.autor.fullName}</p>
           {isEditing ? (
             <form className="w-full" onSubmit={(e) => console.log()}>
               <Textarea

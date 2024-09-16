@@ -5,6 +5,7 @@ import { Button } from "../ui/button";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { logout, selectIsAuth } from "@/redux/slices/authSlice";
+import { ModeToggle } from "../ui/mode-toogle";
 const Header = () => {
   const dispatch = useDispatch();
   const isAuth = useSelector(selectIsAuth);
@@ -21,12 +22,14 @@ const Header = () => {
         <Link to={"/"}>
           <Button>BLOG</Button>
         </Link>
+
         {isAuth ? (
           <div className="flex gap-2 items-center">
             <Link to={"/add-post"}>
               <Button variant={"outline"}>Написать статью</Button>
             </Link>
             <Button onClick={onClickLogout}>Выйти</Button>
+            <ModeToggle />
           </div>
         ) : (
           <div className="flex gap-2 items-center">
@@ -36,6 +39,7 @@ const Header = () => {
             <Link to={"/register"}>
               <Button>Создать аккаунт</Button>
             </Link>
+            <ModeToggle />
           </div>
         )}
       </div>

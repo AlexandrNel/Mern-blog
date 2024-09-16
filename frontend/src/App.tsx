@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { useDispatch } from "react-redux";
 import { fetchAuthMe } from "./redux/slices/authSlice";
 import { AppDispatch } from "./redux/store";
+import { ModeToggle } from "./components/ui/mode-toogle";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,6 +21,7 @@ function App() {
   return (
     <>
       <Header />
+
       <div className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />}></Route>
