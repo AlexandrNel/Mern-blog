@@ -9,6 +9,7 @@ import axios from "../../axios";
 import { toast } from "sonner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
+import UserAvatar from "../UserAvatar";
 
 interface PostProps extends PostType {
   isEditable?: boolean;
@@ -46,11 +47,13 @@ const Post: React.FC<PostProps> = ({
     >
       {isEditable && (
         <div
-          className={`${styles.edit} dark:bg-slate-400 flex gap-5 p-2 rounded absolute right-0 w-min`}
+          className={`${styles.edit}  flex gap-5 p-2 rounded absolute right-0 w-min`}
         >
-          <Link to={`/posts/${_id}/edit`}>
-            <Pencil size={20} color="#858585" strokeWidth={2} />
-          </Link>
+          <button>
+            <Link to={`/posts/${_id}/edit`}>
+              <Pencil size={20} color="#858585" strokeWidth={2} />
+            </Link>
+          </button>
           <button onClick={onClickRemovePost}>
             <X size={20} color="#858585" strokeWidth={2} />
           </button>
@@ -64,17 +67,7 @@ const Post: React.FC<PostProps> = ({
       </div>
       <div className="p-5  rounded-lg">
         <div className="flex gap-2 items-center">
-          <Avatar>
-            <AvatarImage src="" />
-            <AvatarFallback>
-              {user.fullName.includes("")
-                ? user.fullName
-                    .split(" ")
-                    .map((item) => item.slice(0, 1))
-                    .join("")
-                : user.fullName.slice(0, 1)}
-            </AvatarFallback>
-          </Avatar>
+          <UserAvatar user={user} />
           <div className="flex flex-col mb-2">
             <p className={styles.name}>{user.fullName}</p>
             <span className="flex gap-1">
@@ -99,7 +92,7 @@ const Post: React.FC<PostProps> = ({
               <span key={i}>#{value}</span>
             ))}
           </div>
-          <div className={`pb-5 text-[20px ${styles.markdown}`}>
+          <div className={`pb-5 text-[16px] ${styles.markdown}`}>
             <ReactMarkdown children={text} />
           </div>
           <div className="flex gap-3">

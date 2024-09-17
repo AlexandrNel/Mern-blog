@@ -122,16 +122,18 @@ const AddPost: React.FC<propsType> = ({ isEditing = false }) => {
               загрузить превью
             </Button>
             {imageUrl && (
-              <>
-                <Button
-                  className="w-min"
-                  variant={"destructive"}
-                  onClick={onClickRemoveFile}
-                >
-                  Удалить
-                </Button>
+              <Button
+                className="w-min"
+                variant={"destructive"}
+                onClick={onClickRemoveFile}
+              >
+                Удалить
+              </Button>
+            )}
+            {imageUrl && (
+              <div className="flex flex-col items-center">
                 <img src={imageUrl} alt="image" />
-              </>
+              </div>
             )}
           </div>
 

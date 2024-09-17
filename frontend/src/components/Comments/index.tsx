@@ -15,6 +15,12 @@ type CommentsListProps = {
   isEditable?: boolean;
 };
 
+export type EditingComment = {
+  id: string;
+  content: string;
+};
+
+export const maxLength = 200;
 const Comments: React.FC<CommentsListProps> = ({
   comments = [],
   user,
@@ -23,9 +29,8 @@ const Comments: React.FC<CommentsListProps> = ({
   const inputRef = React.useRef<HTMLTextAreaElement>(null);
   const [commentsData, setComments] = React.useState<CommentType[]>(comments);
   const [value, setValue] = React.useState("");
-
-  console.log(value);
-
+  const [editingComment, setEditingComment] = React.useState<string>();
+  const [isError, setIsError] = React.useState(false);
   const handleRemoveComment = async (id: string) => {
     if (window.confirm("Вы уверены, что хотите удалить комментарий?")) {
       try {
@@ -63,6 +68,21 @@ const Comments: React.FC<CommentsListProps> = ({
       });
   };
 
+  const handleEdit = async ({ id, content }: EditingComment) => {
+    setEditingComment("");
+    setIsError(false);
+    try {
+      await axios.put(`/comments/${id}`, { content }).then((res) => res.data);
+      toast.success("Комментарий изменен");
+    } catch (error) {
+      setIsError(true);
+      toast.error("Возникла ошибка при попытке изменить комментарий");
+    }
+
+    console.log(id);
+
+    console.log({ id, content });
+  };
   if (!comments) {
     return <>Loading...</>;
   }
@@ -70,7 +90,15 @@ const Comments: React.FC<CommentsListProps> = ({
     <div className="p-5 pr-0 border bg-card text-card-foreground shadow  rounded-lg">
       <h2 className="text-[20px] font-bold">Комментарии</h2>
       {commentsData.map((item) => (
-        <Comment comment={item} handleRemove={handleRemoveComment} />
+        <Comment
+          isError={isError}
+          key={item._id}
+          comment={item}
+          isEditing={editingComment === item._id}
+          setIsEditing={setEditingComment}
+          handleEdit={handleEdit}
+          handleRemove={handleRemoveComment}
+        />
       ))}
       <div className="flex items-center gap-2 mb-5">
         <UserAvatar imageUrl={"http://localhost:3000/uploads/walter.jpg"} />
@@ -90,10 +118,13 @@ const Comments: React.FC<CommentsListProps> = ({
               ref={inputRef}
               value={value}
               onChange={(e) => setValue(e.target.value)}
-              className="mb-4"
-              maxLength={100}
+              className=""
+              maxLength={200}
               placeholder="Написать комментарий"
             />
+            <p className="text-xs text-right text-foreground opacity-50">
+              {maxLength - value.length}/{maxLength}
+            </p>
             <Button>Отправить</Button>
           </form>
         </div>

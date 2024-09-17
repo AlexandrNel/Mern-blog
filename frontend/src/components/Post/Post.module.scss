@@ -10,8 +10,11 @@
   &:hover {
     border: 1px solid hsl(var(--secondary-foreground));
     .edit {
-      opacity: 0.9;
+      opacity: 1;
       visibility: visible;
+      svg {
+        stroke: hsl(var(--secondary-foreground));
+      }
     }
   }
 }
@@ -19,13 +22,26 @@ p.name {
   font-weight: 600;
 }
 .edit {
-  // background-color: rgba(255, 255, 255, 0.603);
-  svg {
-    stroke: hsl(var(--secondary-foreground));
+  z-index: 10;
+  background-color: hsl(var(--secondary));
+  button {
+    opacity: 0.5;
+    &:hover {
+      opacity: 1;
+    }
   }
-  transition: all 0.4s ease-in-out;
-  opacity: 0;
-  visibility: hidden;
+
+  & {
+    transition: all 0.4s ease-in-out;
+    opacity: 0;
+    visibility: hidden;
+  }
+  & > {
+    svg {
+      opacity: 0.4;
+      stroke: hsl(var(--secondary-foreground));
+    }
+  }
 }
 .markdown {
   h1 {
@@ -39,9 +55,9 @@ p.name {
     font-size: 20px;
   }
   p {
-    font-size: 20px;
+    font-size: 16px;
 
-    margin-bottom: 10px;
+    margin-bottom: 24px;
     text-align: justify;
   }
 }
@@ -54,8 +70,11 @@ p.name {
   justify-content: center;
   align-items: center;
   &.full {
-    display: block;
+    display: flex;
     max-height: unset;
+    img {
+      width: unset;
+    }
   }
   img {
     width: 100%;
