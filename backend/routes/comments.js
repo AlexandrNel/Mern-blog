@@ -43,4 +43,22 @@ router.delete("/comments/:id", checkAuth, async (req, res) => {
     res.status(401).json({ message: "Не удалось удалить комментарий" });
   }
 });
+router.put("/comments/:id", checkAuth, async (req, res) => {
+  try {
+    const commentId = req.params.id;
+    if (!req.body.content) {
+      return res.status("401").json({ message: "Пустой текст" });
+    }
+    await Comment.updateOne(
+      { _id: commentId },
+      {
+        content: req.body.content,
+      }
+    );
+    res.json({ message: "success" });
+  } catch (error) {
+    console.log(error);
+    res.status(401).json({ message: "Не удалось обновить комментарий" });
+  }
+});
 export default router;
