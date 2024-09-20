@@ -1,22 +1,29 @@
 import React from "react";
-import { PostType } from "@/redux/slices/postsSlice";
+import { fetchTags, PostType } from "@/redux/slices/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { fetchPosts } from "@/redux/slices/postsSlice";
 import Tabs from "../components/Tabs";
 import Post from "../components/Post";
 import SkeletonPost from "@/components/SkeletonPost";
+import SideBar from "@/components/SideBar";
 
 const Home: React.FC = () => {
   const [category, setCategory] = React.useState(1);
   const dispatch = useDispatch<AppDispatch>();
   const { posts } = useSelector((state: RootState) => state.posts);
+  const { tags } = useSelector((state: RootState) => state.posts);
   const { data } = useSelector((state: RootState) => state.auth);
 
+  const isLoadingTags = tags.status === "loading";
   const isLoading = posts.status === "loading";
+
   React.useEffect(() => {
     dispatch(fetchPosts(category));
   }, [category]);
+  React.useEffect(() => {
+    dispatch(fetchTags());
+  }, []);
   return (
     <div className={`container-main `}>
       <Tabs value={category} setValue={setCategory} />
@@ -43,7 +50,7 @@ const Home: React.FC = () => {
               )
           )}
         </div>
-        <div>Aside</div>
+        {isLoadingTags ? "loading" : <SideBar tags={tags.items} />}
       </div>
     </div>
   );

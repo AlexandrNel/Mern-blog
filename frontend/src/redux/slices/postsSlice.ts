@@ -46,13 +46,17 @@ export interface PostsState {
   };
 }
 
+export const fetchTags = createAsyncThunk("posts/fetchTags", async () => {
+  const { data } = await axios.get("/tags");
+  return data;
+});
+
 export const fetchPosts = createAsyncThunk(
   "posts/fetchPosts",
   async (id?: number) => {
     const sortParams = list.find((item) => item.id === id);
     if (sortParams) {
       const { field, property } = sortParams;
-
       const { data } = await axios.get(
         `/posts?sortBy=${field}&sortOrder=${property}`
       );
@@ -86,10 +90,17 @@ export const postsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(fetchPosts.fulfilled, (state, action) => {
-      state.posts.items = action.payload;
-      state.posts.status = Status.SUCCESS;
+    builder.addCase(fetchTags.pending, (state) => {
+      state.tags.status = Status.LOADING;
     }),
+      builder.addCase(fetchTags.fulfilled, (state, action) => {
+        state.tags.items = action.payload;
+        state.tags.status = Status.SUCCESS;
+      }),
+      builder.addCase(fetchPosts.fulfilled, (state, action) => {
+        state.posts.items = action.payload;
+        state.posts.status = Status.SUCCESS;
+      }),
       builder.addCase(fetchPosts.pending, (state) => {
         state.posts.items = [];
         state.posts.status = Status.LOADING;
