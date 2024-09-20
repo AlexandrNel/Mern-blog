@@ -15,7 +15,6 @@ export const getAll = async (req, res) => {
       })
       .sort(sort)
       .exec();
-    console.log(posts);
 
     res.json(posts);
   } catch (error) {
@@ -28,15 +27,12 @@ export const getAll = async (req, res) => {
 export const getComments = async (req, res) => {
   try {
     const postId = req.params.id;
-    console.log(postId);
 
     const comments = await PostSchema.findById(postId)
       .select("comments")
       .populate({
         path: "autor",
       });
-
-    console.log(comments);
 
     res.json(comments);
   } catch (error) {

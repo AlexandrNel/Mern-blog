@@ -7,6 +7,7 @@ import {
   commentsRouter,
   postRouter,
   uploadRouter,
+  tagsRouter,
 } from "./routes/index.js";
 import { connectToDatebase } from "./database/connect.js";
 import { cleanUpPosts } from "./utils/cleanUp.js";
@@ -21,7 +22,8 @@ app.use(
   uploadRouter,
   authRouter,
   postRouter,
-  commentsRouter
+  commentsRouter,
+  tagsRouter
 );
 
 app.listen(PORT, (err) => (err ? console.log(err) : console.log("Server OK")));
