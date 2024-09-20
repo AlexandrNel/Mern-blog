@@ -11,6 +11,8 @@ import { useDispatch } from "react-redux";
 import { fetchAuthMe } from "./redux/slices/authSlice";
 import { AppDispatch } from "./redux/store";
 import { ModeToggle } from "./components/ui/mode-toogle";
+import { Tags } from "lucide-react";
+import TagsPage from "./pages/Tags";
 
 function App() {
   const dispatch = useDispatch<AppDispatch>();
@@ -26,6 +28,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/posts/:id" element={<PostPage />}></Route>
+          <Route path="/tags" element={<TagsPage />}></Route>
           <Route
             path="/posts/:id/edit"
             element={<AddPost isEditing={true} />}
