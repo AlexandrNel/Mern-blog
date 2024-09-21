@@ -2,7 +2,6 @@ import { CommentType } from "@/redux/slices/postsSlice";
 import React from "react";
 import UserAvatar from "../UserAvatar";
 import { Textarea } from "../ui/textarea";
-import { Pencil, Trash2 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { selectAuthData } from "@/redux/slices/authSlice";
 import { EditingComment, maxLength } from "../Comments";
@@ -26,11 +25,9 @@ const Comment: React.FC<CommentProps> = ({
 }) => {
   const [editValue, setEdit] = React.useState("");
   const [error, setError] = React.useState(false);
-
   const editRef = React.useRef<HTMLTextAreaElement>(null);
   const me = useSelector(selectAuthData);
-
-  console.log(editValue);
+  const handleCancel = () => {};
   React.useEffect(() => {
     setEdit(comment.content);
   }, []);
@@ -107,6 +104,16 @@ const Comment: React.FC<CommentProps> = ({
           >
             <span className="flex items-center gap-2">Delete</span>
           </button>
+          {isEditing && (
+            <button
+              onClick={() => {
+                handleCancel();
+              }}
+              className="px-2  transition-opacity text-[#868686] hover:text-foreground"
+            >
+              <span className="flex items-center gap-2">Cancel</span>
+            </button>
+          )}
         </div>
       ) : (
         ""

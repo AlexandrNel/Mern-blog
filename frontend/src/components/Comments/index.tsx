@@ -78,10 +78,6 @@ const Comments: React.FC<CommentsListProps> = ({
       setIsError(true);
       toast.error("Возникла ошибка при попытке изменить комментарий");
     }
-
-    console.log(id);
-
-    console.log({ id, content });
   };
   if (!comments) {
     return <>Loading...</>;
