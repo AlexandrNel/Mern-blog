@@ -68,7 +68,7 @@ const Register = () => {
   }
 
   return (
-    <div className="container-main h-full flex justify-center items-center">
+    <div className="container-main  flex justify-center items-center">
       <div className=" w-[400px] mt-[-86px] border bg-card text-card-foreground shadow  rounded-lg p-10 ">
         <h1 className=" text-center font-bold text-[30px] mb-5">
           Создание аккаунта
