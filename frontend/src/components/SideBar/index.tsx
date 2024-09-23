@@ -12,8 +12,8 @@ const SideBar: React.FC<SideBarProps> = ({ tags }) => {
         <h2 className="font-bold text-2xl mb-4">Тэги</h2>
 
         <ul className=" flex flex-col gap-2">
-          {tags.map((tag) => (
-            <li className=" transition-colors hover:text-[#344cd6]">
+          {tags.map((tag, i) => (
+            <li key={i} className=" transition-colors hover:text-[#344cd6]">
               <Link to={`/tags/?tag=${tag}`}>#{tag}</Link>
             </li>
           ))}

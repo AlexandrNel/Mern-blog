@@ -39,6 +39,7 @@ const PostPage = () => {
     <div className="container-main">
       <>
         <Post
+          usersWhoLiked={[]}
           _id={post._id}
           comments={post.comments}
           imageUrl={post.imageUrl}
@@ -46,6 +47,7 @@ const PostPage = () => {
           text={post.text}
           title={post.title}
           user={post.user}
+          likesCount={post.likesCount}
           viewsCount={post.viewsCount}
           createdAt={post.createdAt}
           updatedAt={post.updatedAt}

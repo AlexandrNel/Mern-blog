@@ -22,10 +22,12 @@ export type PostType = {
   _id: string;
   tags: string[];
   imageUrl: string;
-  text?: string;
-  comments?: CommentType[];
+  text: string;
+  comments: CommentType[] | [];
+  usersWhoLiked: string[];
   title: string;
   user: Autor;
+  likesCount: number;
   viewsCount: number;
   createdAt: string;
   updatedAt: string;
@@ -37,6 +39,7 @@ export enum Status {
 }
 export interface PostsState {
   posts: {
+    isLiked: boolean;
     items: PostType[];
     status: "loading" | "error" | "success";
   };
@@ -76,6 +79,7 @@ export const deletePost = createAsyncThunk(
 
 const initialState: PostsState = {
   posts: {
+    isLiked: false,
     items: [],
     status: Status.LOADING,
   },

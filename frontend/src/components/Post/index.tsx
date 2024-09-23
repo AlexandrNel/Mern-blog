@@ -1,15 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./Post.module.scss";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Eye, MessageSquare, Pencil, X } from "lucide-react";
+import { Eye, MessageSquare, Pencil, ThumbsUp, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
 import { Link } from "react-router-dom";
 import { deletePost, PostType } from "@/redux/slices/postsSlice";
-import axios from "../../axios";
 import { toast } from "sonner";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import UserAvatar from "../UserAvatar";
+import axios from "../../axios";
 
 interface PostProps extends PostType {
   isEditable?: boolean;
@@ -21,6 +21,7 @@ const Post: React.FC<PostProps> = ({
   imageUrl,
   user,
   comments = [],
+  likesCount,
   createdAt,
   updatedAt,
   title,
@@ -30,6 +31,10 @@ const Post: React.FC<PostProps> = ({
   isEditable = true,
   isFull = false,
 }) => {
+  const [isLiked, setIsLiked] = React.useState(false);
+  const [localLikesCount, setLikesCount] = React.useState(likesCount);
+  const me = useSelector((state: RootState) => state.auth.data);
+  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const onClickRemovePost = async () => {
     if (window.confirm("Вы уверены, что хотите удалить статью?")) {
@@ -37,6 +42,24 @@ const Post: React.FC<PostProps> = ({
       toast.success("Статья успешно удалена");
     }
   };
+  const handleLike = async () => {
+    if (!me?._id) {
+      return navigate("/login");
+    }
+    try {
+      if (isLiked) {
+        setIsLiked(false);
+        setLikesCount(localLikesCount - 1);
+      } else {
+        setIsLiked(true);
+        setLikesCount(localLikesCount + 1);
+      }
+      // const { data } = await axios.post(`/posts/${_id}/like`);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div
       className={`${styles.root} ${
@@ -103,6 +126,17 @@ const Post: React.FC<PostProps> = ({
             <span className="flex items-center gap-1">
               <MessageSquare size={16} color="#858585" strokeWidth={1} />
               {comments.length}
+            </span>
+            <span className="flex items-center gap-1">
+              <ThumbsUp
+                onClick={handleLike}
+                className={`${
+                  isLiked ? "scale-110 stroke-blue-700" : ""
+                } transition-transform active:scale-95 hover:scale-110 hover:stroke-blue-700  box-content p-2 mx-[-8px] cursor-pointer`}
+                size={16}
+                strokeWidth={1}
+              />
+              {localLikesCount}
             </span>
           </div>
         </div>

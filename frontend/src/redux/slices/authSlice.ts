@@ -7,6 +7,8 @@ type User = {
   _id: string;
   fullName: string;
   email: string;
+  likedPosts: string[];
+  posts: string[];
   createdAt: string;
   updatedAt: string;
   token: string;
