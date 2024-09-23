@@ -24,7 +24,7 @@ function App() {
     <>
       <Header />
 
-      <div className="flex-grow">
+      <div className="flex-grow flex justify-center">
         <Routes>
           <Route path="/" element={<Home />}></Route>
           <Route path="/posts/:id" element={<PostPage />}></Route>
