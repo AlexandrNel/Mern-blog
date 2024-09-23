@@ -19,6 +19,7 @@ const UserSchema = new mongoose.Schema(
     avatarUrl: {
       type: String,
     },
+    likedPosts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
     posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "Post" }],
   },
   {
