@@ -43,15 +43,22 @@ export const getComments = async (req, res) => {
 };
 export const create = async (req, res) => {
   try {
+    const userId = req.userId;
     const doc = new PostSchema({
       title: req.body.title,
       text: req.body.text,
       tags: req.body.tags,
       imageUrl: req.body.imageUrl,
-      user: req.userId,
+      user: userId,
     });
-    const user = await doc.save();
-    res.json(user);
+    const post = await doc.save();
+    await UserSchema.updateOne(
+      {
+        _id: userId,
+      },
+      { $push: { posts: doc._id } }
+    );
+    res.json(post);
   } catch (error) {
     console.log(error);
     res.status(500).json({
@@ -112,21 +119,31 @@ export const getOne = async (req, res) => {
 export const remove = async (req, res) => {
   try {
     const postId = req.params.id;
-    PostSchema.findOneAndDelete({ _id: postId }).then((doc, err) => {
-      if (err) {
-        console.log(err);
-        return res.status(500).json({
-          message: "Не удалось удалить статью",
-        });
+    const post = await PostSchema.findOneAndDelete({ _id: postId }).then(
+      (doc, err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).json({
+            message: "Не удалось удалить статью",
+          });
+        }
+        if (!doc) {
+          console.log(err);
+          return res.status(404).json({
+            message: "Статья не найдена",
+          });
+        }
+
+        res.json({ success: true });
+        return doc;
       }
-      if (!doc) {
-        console.log(err);
-        return res.status(404).json({
-          message: "Статья не найдена",
-        });
-      }
-      res.json({ success: true });
-    });
+    );
+    await UserSchema.updateOne(
+      {
+        _id: post.user,
+      },
+      { $pull: { posts: postId } }
+    );
   } catch (error) {
     console.log(error);
     res.status(500).json({
