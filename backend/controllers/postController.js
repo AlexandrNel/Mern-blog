@@ -10,6 +10,7 @@ export const getAll = async (req, res) => {
     sort[sortBy] = sortOrder === "asc" ? 1 : -1;
 
     const posts = await PostSchema.find()
+      .select("-usersWhoLiked")
       .populate({
         path: "user",
         select: ["fullName", "avatarUrl"],
@@ -188,13 +189,14 @@ export const like = async (req, res) => {
       user.likedPosts = user.likedPosts.filter((post) => post != postId);
       await post.save();
       await user.save();
-      return res.json({ isLiked: true });
+      return res.json({ isLiked: false });
     }
     user.likedPosts.push(postId);
     post.usersWhoLiked.push(userId);
+    post.likesCount = post.usersWhoLiked.length;
     await user.save();
     await post.save();
-    res.json({ isLiked: false });
+    res.json({ isLiked: true });
   } catch (error) {
     console.log(error);
   }
