@@ -24,7 +24,6 @@ export type PostType = {
   imageUrl: string;
   text: string;
   comments: CommentType[] | [];
-  usersWhoLiked: string[];
   title: string;
   user: Autor;
   likesCount: number;

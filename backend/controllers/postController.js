@@ -1,4 +1,3 @@
-import { populate } from "dotenv";
 import PostSchema from "../models/post.js";
 import UserSchema from "../models/user.js";
 
@@ -70,6 +69,7 @@ export const create = async (req, res) => {
 export const getOne = async (req, res) => {
   try {
     const postId = req.params.id;
+
     if (postId.match(/^[0-9a-fA-F]{24}$/)) {
       PostSchema.findOneAndUpdate(
         { _id: postId },
@@ -173,31 +173,5 @@ export const update = async (req, res) => {
     res.status(500).json({
       message: "Не удалось обновить статью",
     });
-  }
-};
-export const like = async (req, res) => {
-  try {
-    const userId = req.userId;
-    const postId = req.params.id;
-    if (!userId || !postId) {
-      return res.status(404).json({ message: "error" });
-    }
-    const post = await PostSchema.findById(postId);
-    const user = await UserSchema.findById(userId);
-    if (post.usersWhoLiked.includes(userId)) {
-      post.usersWhoLiked = post.usersWhoLiked.filter((user) => user != userId);
-      user.likedPosts = user.likedPosts.filter((post) => post != postId);
-      await post.save();
-      await user.save();
-      return res.json({ isLiked: false });
-    }
-    user.likedPosts.push(postId);
-    post.usersWhoLiked.push(userId);
-    post.likesCount = post.usersWhoLiked.length;
-    await user.save();
-    await post.save();
-    res.json({ isLiked: true });
-  } catch (error) {
-    console.log(error);
   }
 };

@@ -37,7 +37,6 @@ const Home: React.FC = () => {
                 <Post
                   key={i}
                   text={""}
-                  usersWhoLiked={[]}
                   comments={item.comments}
                   _id={item._id}
                   imageUrl={item.imageUrl}
