@@ -42,24 +42,31 @@ const Post: React.FC<PostProps> = ({
       toast.success("Статья успешно удалена");
     }
   };
+  const checkIsLiked = async () => {
+    const { isLiked } = await axios.get(`/like/${_id}`).then((res) => res.data);
+    setIsLiked(isLiked);
+  };
   const handleLike = async () => {
     if (!me?._id) {
       return navigate("/login");
     }
     try {
       if (isLiked) {
+        await axios.delete(`/like/${_id}`);
         setIsLiked(false);
         setLikesCount(localLikesCount - 1);
       } else {
+        await axios.post(`/like/${_id}`);
         setIsLiked(true);
         setLikesCount(localLikesCount + 1);
       }
-      // const { data } = await axios.post(`/posts/${_id}/like`);
     } catch (error) {
       console.log(error);
     }
   };
-
+  React.useEffect(() => {
+    checkIsLiked();
+  }, []);
   return (
     <div
       className={`${styles.root} ${

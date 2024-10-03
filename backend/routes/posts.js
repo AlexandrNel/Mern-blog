@@ -21,7 +21,5 @@ router.patch(
   handleValidationErrors,
   PostController.update
 );
-router.delete("/posts/:id", checkAuth, PostController.remove);
-router.post("/posts/:id/like", checkAuth, PostController.like);
 
 export default router;
