@@ -7,6 +7,9 @@
     color: rgb(133, 133, 133);
     font-size: 12px;
   }
+  .tag:hover span {
+    color: #344cd6;
+  }
   &:hover {
     border: 1px solid hsl(var(--secondary-foreground));
     .edit {

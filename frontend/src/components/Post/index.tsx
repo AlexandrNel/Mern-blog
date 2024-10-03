@@ -1,9 +1,8 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import styles from "./Post.module.scss";
 import { Eye, MessageSquare, Pencil, ThumbsUp, X } from "lucide-react";
 import ReactMarkdown from "react-markdown";
-import { Link } from "react-router-dom";
 import { deletePost, PostType } from "@/redux/slices/postsSlice";
 import { toast } from "sonner";
 import { useDispatch, useSelector } from "react-redux";
@@ -119,7 +118,9 @@ const Post: React.FC<PostProps> = ({
           )}
           <div className="flex gap-3 mb-5">
             {tags.map((value, i) => (
-              <span key={i}>#{value}</span>
+              <Link key={i} className={styles.tag} to={`tags/?tag=${value}`}>
+                <span>#{value}</span>
+              </Link>
             ))}
           </div>
           <div className={`pb-5 text-[16px] ${styles.markdown}`}>
