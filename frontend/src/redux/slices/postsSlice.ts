@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { list } from "@/components/Tabs";
 import axios from "../../axios";
+import { RootState } from "../store";
 
 export type Autor = {
   _id: string;
@@ -68,6 +69,13 @@ export const fetchPosts = createAsyncThunk(
     return data;
   }
 );
+export const fetchPostsByTag = createAsyncThunk(
+  "posts/fetchPostsByTag",
+  async (tag: string) => {
+    const { data } = await axios.get(`/tags/${tag}`);
+    return data;
+  }
+);
 export const deletePost = createAsyncThunk(
   "posts/deletePost",
   async (id: string) => {
@@ -112,6 +120,18 @@ export const postsSlice = createSlice({
         state.posts.items = [];
         state.posts.status = Status.ERROR;
       });
+    builder.addCase(fetchPostsByTag.fulfilled, (state, action) => {
+      state.posts.items = action.payload;
+      state.posts.status = Status.SUCCESS;
+    });
+    builder.addCase(fetchPostsByTag.rejected, (state) => {
+      state.posts.items = [];
+      state.posts.status = Status.ERROR;
+    });
+    builder.addCase(fetchPostsByTag.pending, (state) => {
+      state.posts.items = [];
+      state.posts.status = Status.LOADING;
+    });
     builder.addCase(deletePost.pending, (state, action) => {
       state.posts.items = state.posts.items.filter(
         (item) => item._id !== action.meta.arg
@@ -119,6 +139,7 @@ export const postsSlice = createSlice({
     });
   },
 });
-
+export const selectPostsItems = (state: RootState) => state.posts.posts.items;
+export const selectPostsStatus = (state: RootState) => state.posts.posts.status;
 export const {} = postsSlice.actions;
 export default postsSlice.reducer;

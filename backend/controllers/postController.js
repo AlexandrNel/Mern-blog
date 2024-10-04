@@ -9,7 +9,6 @@ export const getAll = async (req, res) => {
     sort[sortBy] = sortOrder === "asc" ? 1 : -1;
 
     const posts = await PostSchema.find()
-      .select("-usersWhoLiked")
       .populate({
         path: "user",
         select: ["fullName", "avatarUrl"],

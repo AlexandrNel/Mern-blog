@@ -24,6 +24,9 @@ router.get("/tags/:tag", async (req, res) => {
     const regex = new RegExp(tag, "i");
     const posts = await PostSchema.find({
       tags: { $regex: regex },
+    }).populate({
+      path: "user",
+      select: ["fullName", "avatarUrl"],
     });
     res.json(posts);
   } catch (error) {
