@@ -4,7 +4,7 @@ export const checkIsLiked = async (req, res) => {
   try {
     const userId = req.userId;
     const postId = req.params.id;
-    const like = await LikeSchema.findOne({ userId: userId });
+    const like = await LikeSchema.findOne({ userId: userId, postId: postId });
     if (like) {
       res.json({ isLiked: true });
     } else {
@@ -19,7 +19,7 @@ export const addLike = async (req, res) => {
     const userId = req.userId;
     const postId = req.params.id;
 
-    const like = await LikeSchema.findOne({ userId: userId });
+    const like = await LikeSchema.findOne({ userId: userId, postId: postId });
     if (like) {
       return res.status(404).json({ message: "Лайк уже поставлен" });
     }
