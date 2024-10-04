@@ -118,7 +118,7 @@ const Post: React.FC<PostProps> = ({
           )}
           <div className="flex gap-3 mb-5">
             {tags.map((value, i) => (
-              <Link key={i} className={styles.tag} to={`tags/?tag=${value}`}>
+              <Link key={i} className={styles.tag} to={`/tags/?tag=${value}`}>
                 <span>#{value}</span>
               </Link>
             ))}
