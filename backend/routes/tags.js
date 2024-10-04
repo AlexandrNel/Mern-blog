@@ -1,11 +1,11 @@
 import express from "express";
-import Post from "../models/post.js";
+import PostSchema from "../models/post.js";
 import mongoose from "mongoose";
 import { checkAuth } from "../middlewares/index.js";
 const router = express.Router();
 router.get("/tags", async (req, res) => {
   try {
-    const posts = await Post.find();
+    const posts = await PostSchema.find();
     const tags = posts.map((post) => {
       return post.tags[0];
     });
@@ -16,6 +16,19 @@ router.get("/tags", async (req, res) => {
     res.status(401).json({
       message: "Error",
     });
+  }
+});
+router.get("/tags/:tag", async (req, res) => {
+  try {
+    const tag = req.params.tag.trim();
+    const regex = new RegExp(tag, "i");
+    const posts = await PostSchema.find({
+      tags: { $regex: regex },
+    });
+    res.json(posts);
+  } catch (error) {
+    console.log(error);
+    res.status(404).json({ message: "Статьи не найдены" });
   }
 });
 
